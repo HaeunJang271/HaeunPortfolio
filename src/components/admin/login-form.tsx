@@ -14,7 +14,11 @@ export function LoginForm() {
       const { auth } = getFirebaseClient();
       const credential = await signInWithEmailAndPassword(auth, String(formData.get("email")), String(formData.get("password")));
       const response = await fetch("/api/auth/session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken: await credential.user.getIdToken() }) });
-      if (!response.ok) { await signOut(auth); throw new Error("계정에 관리자 접근 권한이 없습니다."); }
+      if (!response.ok) {
+        await signOut(auth);
+        if (response.status === 403) throw new Error("계정에 관리자 접근 권한이 없습니다. ADMIN_EMAILS에 로그인 이메일이 있는지 확인하세요.");
+        throw new Error("세션 생성에 실패했습니다. Firebase Admin 환경 변수(FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY)를 확인하세요.");
+      }
       window.location.assign("/admin");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "로그인에 실패했습니다."); setBusy(false);

@@ -1,8 +1,9 @@
 import { z } from "zod";
 
 const localizedText = z.object({ ko: z.string().max(30_000), en: z.string().max(30_000) });
-const optionalUrl = z.union([z.string().url().max(2048), z.literal(""), z.null()]).transform((value) => value || null);
-const imageUrl = z.string().url().max(2048).refine((value) => { try { return new URL(value).hostname === "firebasestorage.googleapis.com"; } catch { return false; } });
+const httpUrl = z.string().url().max(2048).refine((value) => { try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; } });
+const optionalUrl = z.union([httpUrl, z.literal(""), z.null()]).transform((value) => value || null);
+const imageUrl = httpUrl.refine((value) => { try { return new URL(value).protocol === "https:" && new URL(value).hostname === "firebasestorage.googleapis.com"; } catch { return false; } });
 
 export const projectInputSchema = z.object({
   slug: z.string().trim().min(2).max(100).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
@@ -18,7 +19,7 @@ export const projectInputSchema = z.object({
   gallery: z.array(imageUrl).max(30),
   githubUrl: optionalUrl,
   liveUrl: optionalUrl,
-  status: z.enum(["in-progress", "completed", "archived"]),
+  status: z.enum(["unknown", "in-progress", "completed", "archived"]),
   featured: z.boolean(),
   published: z.boolean(),
 });

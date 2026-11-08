@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMessages, isLocale } from "@/lib/i18n/config";
+import { localizedAlternates } from "@/lib/i18n/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  return { title: locale === "ko" ? "소개" : "About", description: locale === "ko" ? "장하은 소프트웨어 개발자 소개" : "About Haeun Jang, Software Developer" };
+  if (!isLocale(locale)) return {};
+  return { title: locale === "ko" ? "소개" : "About", description: locale === "ko" ? "장하은 소프트웨어 개발자 소개" : "About Haeun Jang, Software Developer", alternates: localizedAlternates(locale, "about") };
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {

@@ -1,6 +1,6 @@
 export type LocalizedText = { ko: string; en: string };
 
-export type ProjectStatus = "in-progress" | "completed" | "archived";
+export type ProjectStatus = "unknown" | "in-progress" | "completed" | "archived";
 
 export interface ProjectDocument {
   id: string;

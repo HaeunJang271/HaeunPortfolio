@@ -4,11 +4,12 @@ import { z } from "zod";
 import { getAdminSession } from "@/lib/auth/session";
 import { getFirebaseAdmin } from "@/lib/firebase/admin";
 
+const safeUrl = z.string().url().refine((value) => { try { return new URL(value).protocol === "https:"; } catch { return false; } });
 const settingsSchema = z.object({
   siteTitle: z.object({ ko: z.string().max(120), en: z.string().max(120) }),
   defaultLocale: z.enum(["ko", "en"]),
   profile: z.object({ name: z.string().max(120), role: z.object({ ko: z.string().max(120), en: z.string().max(120) }), introduction: z.object({ ko: z.string().max(2000), en: z.string().max(2000) }), location: z.string().max(120).optional() }),
-  socialLinks: z.object({ github: z.string().url().or(z.literal("")), linkedin: z.string().url().or(z.literal("")), website: z.string().url().or(z.literal("")) }),
+  socialLinks: z.object({ github: safeUrl.or(z.literal("")), linkedin: safeUrl.or(z.literal("")), website: safeUrl.or(z.literal("")) }),
   contactEmail: z.string().email().or(z.literal("")),
   seo: z.object({ description: z.object({ ko: z.string().max(300), en: z.string().max(300) }), keywords: z.array(z.string().max(50)).max(30) }),
 });

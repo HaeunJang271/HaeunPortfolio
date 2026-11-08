@@ -5,6 +5,10 @@ import { getMessages, isLocale } from "@/lib/i18n/config";
 import { InteractiveTerminal } from "@/components/terminal/interactive-terminal";
 import { getPublicSettings, getPublishedExperiences, getPublishedPosts } from "@/features/content/public";
 import { getPublishedProjects } from "@/features/projects/seed-projects";
+import type { Metadata } from "next";
+import { localizedAlternates } from "@/lib/i18n/metadata";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> { const { locale: raw } = await params; if (!isLocale(raw)) return {}; const settings = await getPublicSettings(); return { title: settings.siteTitle[raw], description: settings.seo.description[raw], alternates: localizedAlternates(raw, ""), openGraph: { title: settings.siteTitle[raw], description: settings.seo.description[raw], url: `/${raw}` } }; }
 
 const focusAreas = [
   { icon: Code2, label: "SOFTWARE", value: "Web applications" },

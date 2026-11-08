@@ -36,13 +36,15 @@ Indexes should be committed in `firestore.indexes.json` alongside the queries th
 
 ## Progress
 
-- Phase 1: application foundation, locale route shell, responsive navigation, dark design tokens, and initial landing page implemented.
-- Phase 2: public content routes, functional terminal, project catalogue/detail, and persistent locale switching are next.
-- Phase 3: Firebase, authentication, CMS, and media management.
-- Phase 4: blog, inquiries, SEO assets, and security rules.
-- Phase 5: verification and deployment readiness.
+- Phase 1: application foundation, locale route shell, responsive navigation, dark design tokens, and landing page implemented.
+- Phase 2: public content routes, interactive terminal with history, live Firestore project catalogue/detail, locale switching, blog search/Markdown rendering, experience timeline implemented.
+- Phase 3: Firebase client/Admin setup, email allow-list session authentication, protected admin routes, typed Zod-backed CRUD APIs, CMS preview, media library, messages, settings, and draft seed import implemented.
+- Phase 4: contact form and server validation, Firestore rate limiting, SEO metadata/canonicals/sitemap/robots, Firestore and Storage rules implemented.
+- Phase 5: typecheck and production build pass. Firebase-backed behavior still needs an authenticated manual smoke check against the configured Firebase project; deployment is not performed from this workspace.
 
 ## Known issues
 
-- No Firebase project credentials or verified employment history/social profile URLs were provided. Content and links must be confirmed before publication; project seed entries remain drafts.
-- Dependency installation and build verification are pending package registry access.
+- Employment history and social profile URLs were not supplied. The site does not invent these; add verified values through the CMS before publication.
+- Initial project documents are unpublished and use an `unknown` status until reviewed.
+- Firebase service configuration is expected from the ignored local `.env` file. Never copy its contents into source control or chat.
+- Firestore read behavior, Auth login, and Storage uploads still need a manual smoke check with a Firebase administrator account.

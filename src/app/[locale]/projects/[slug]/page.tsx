@@ -5,10 +5,11 @@ import { ArrowUpRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getPublishedProjects } from "@/features/projects/seed-projects";
 import { isLocale } from "@/lib/i18n/config";
+import { localizedAlternates } from "@/lib/i18n/metadata";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> { const { locale, slug } = await params; const project = (await getPublishedProjects()).find((item) => item.slug === slug); return project ? { title: project.title, description: project.description[locale === "en" ? "en" : "ko"] } : {}; }
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> { const { locale: raw, slug } = await params; if (!isLocale(raw)) return {}; const project = (await getPublishedProjects()).find((item) => item.slug === slug); return project ? { title: project.title, description: project.description[raw], alternates: localizedAlternates(raw, `projects/${slug}`), openGraph: { title: project.title, description: project.description[raw], type: "article" } } : {}; }
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale: raw, slug } = await params; if (!isLocale(raw)) notFound();

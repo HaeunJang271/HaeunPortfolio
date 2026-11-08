@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const settings = await getPublicSettings();
   const title = settings.siteTitle[locale];
   const description = settings.seo.description[locale];
-  return { title: { default: title, template: `%s | ${title}` }, description, metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://haeun.dev"), alternates: { languages: { ko: "/ko", en: "/en" } }, openGraph: { siteName: title, type: "website", title, description, locale: locale === "ko" ? "ko_KR" : "en_US" } };
+  return { title: { default: title, template: `%s | ${title}` }, description, metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://haeun.dev"), openGraph: { siteName: title, type: "website", title, description, locale: locale === "ko" ? "ko_KR" : "en_US" } };
 }
 
 export function generateStaticParams() { return locales.map((locale) => ({ locale })); }

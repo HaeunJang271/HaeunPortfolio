@@ -3,10 +3,11 @@ import { notFound } from "next/navigation";
 import { getPublishedProjects } from "@/features/projects/seed-projects";
 import { isLocale } from "@/lib/i18n/config";
 import { ProjectExplorer } from "@/components/projects/project-explorer";
+import { localizedAlternates } from "@/lib/i18n/metadata";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> { const { locale } = await params; return { title: locale === "ko" ? "프로젝트" : "Projects" }; }
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> { const { locale } = await params; if (!isLocale(locale)) return {}; return { title: locale === "ko" ? "프로젝트" : "Projects", alternates: localizedAlternates(locale, "projects") }; }
 
 export default async function ProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: raw } = await params; if (!isLocale(raw)) notFound();
