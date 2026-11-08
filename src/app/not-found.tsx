@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound() { return <main className="grid min-h-[70vh] place-items-center px-5"><section className="text-center"><p className="font-mono text-xs text-accent">404 / NOT FOUND</p><h1 className="mt-4 text-3xl">페이지를 찾을 수 없습니다.</h1><Link href="/ko" className="mt-6 inline-block font-mono text-xs text-secondary hover:text-accent">홈으로 돌아가기 →</Link></section></main>; }
